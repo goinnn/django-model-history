@@ -4,11 +4,12 @@ from news.models import NewsItem, NewsItemHistory
 
 
 class NewsItemAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('title', )
 
 
 class NewsItemHistoryAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('title', 'status')
+    list_filter = ('status', )
 
 
 admin.site.register(NewsItem, NewsItemAdmin)
