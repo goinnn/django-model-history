@@ -22,6 +22,8 @@ from django.utils.translation import ugettext_lazy as _
 from model_history.models import ModelHistoryProvider, BaseModelHistory
 from model_history.utils import create_history_model_class
 
+# Option 1
+
 
 @python_2_unicode_compatible
 class Base(ModelHistoryProvider):
@@ -56,5 +58,7 @@ class Event(BaseNews):
         verbose_name = _('Event')
         verbose_name_plural = _('Events')
 
+
+# Option 2
 
 ContentTypeHistory = create_history_model_class(ContentType, (BaseModelHistory,))
