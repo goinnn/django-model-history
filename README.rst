@@ -15,6 +15,25 @@ Enable in any Model class an change history of all inserts, updates and deletes
 Installation
 ============
 
+In your settings.py
+-------------------
+
+Only you need it, if you want the translation of django-model-history
+
+::
+
+    INSTALLED_APPS = (
+        'django.contrib.auth',
+        'django.contrib.contenttypes',
+        'django.contrib.sessions',
+        'django.contrib.sites',
+        'django.contrib.admin',
+
+        #.....................#
+
+        'model_history',
+    )
+
 
 Option 1: In your models.py
 ---------------------------
@@ -41,7 +60,7 @@ Only you have to update the parent class of your model.
 
     ...
 
-`Example <https://github.com/goinnn/django-model-history/blob/0.1.0/example/news/models.py#L29>`_.
+`Example <https://github.com/goinnn/django-model-history/blob/0.1.0/example/news/models.py#L28>`_.
 
 
 Option 2: In your models.py
@@ -61,26 +80,7 @@ Option 2: In your models.py
     MyModelHistory = create_history_model_class(MyModel, (BaseModelHistory,))
 
 
-`Example <https://github.com/goinnn/django-model-history/blob/0.1.0/example/news/models.py#L64>`_.
-
-In your settings.py
--------------------
-
-Only you need it, if you want the translation of django-model-history
-
-::
-
-    INSTALLED_APPS = (
-        'django.contrib.auth',
-        'django.contrib.contenttypes',
-        'django.contrib.sessions',
-        'django.contrib.sites',
-        'django.contrib.admin',
-
-        #.....................#
-
-        'model_history',
-    )
+`Example <https://github.com/goinnn/django-model-history/blob/0.1.0/example/news/models.py#L63>`_.
 
 
 Development
