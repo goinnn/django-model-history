@@ -15,31 +15,8 @@
 # along with this software.  If not, see <http://www.gnu.org/licenses/>.
 
 
-from django.contrib import admin
+from django.conf.urls import patterns, url
 
-from model_history.admin import ModelHistoryProviderAdmin
-
-from news.models import NewsItem, NewsItemHistory, Event, EventHistory
-
-
-class NewsItemAdmin(admin.ModelAdmin):
-    list_display = ('title', )
-
-
-class NewsItemHistoryAdmin(ModelHistoryProviderAdmin):
-    list_display = ('title', 'history_status', 'history_timestamp')
-
-
-class EventAdmin(admin.ModelAdmin):
-    list_display = ('title', )
-
-
-class EventHistoryAdmin(admin.ModelAdmin):
-    list_display = ('title', 'history_status', 'history_timestamp')
-
-
-admin.site.register(NewsItem, NewsItemAdmin)
-admin.site.register(NewsItemHistory, NewsItemHistoryAdmin)
-
-admin.site.register(Event, EventAdmin)
-admin.site.register(EventHistory, EventHistoryAdmin)
+urlpatterns = patterns('news.views',
+    url(r'^$', 'auto_login', name='auto_login'),
+)

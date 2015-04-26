@@ -1,5 +1,3 @@
-import datetime
-
 from importlib import import_module
 
 from django.db import models
@@ -24,7 +22,8 @@ class BaseModelHistory(models.Model):
     '''Base model class to the hictoric instances'''
 
     history_timestamp = models.DateTimeField(verbose_name=_('Timestamp'),
-                                             default=datetime.datetime.now)
+                                             auto_now_add=True,
+                                             editable=True)
     history_status = models.CharField(verbose_name=_('Status'),
                                       max_length=6, choices=STATUS,
                                       default='update')

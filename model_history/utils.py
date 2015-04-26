@@ -4,8 +4,9 @@ from copy import copy
 
 from django.apps.registry import apps
 from django.db import models
-from django.core.exceptions import AppRegistryNotReady
 from django.db.models.fields.related import ReverseSingleRelatedObjectDescriptor
+from django.core.exceptions import AppRegistryNotReady
+from django.utils.translation import ugettext as _
 
 
 def name_history_model(name):
@@ -29,6 +30,8 @@ def create_empty_class(model, bases):
         class Meta:
             app_label = model._meta.app_label
             abstract = False
+            verbose_name = _('%s change history') % model._meta.verbose_name
+            verbose_name_plural = _('%s change histories') % model._meta.verbose_name
 
         attrs = {}
         attrs["Meta"] = Meta

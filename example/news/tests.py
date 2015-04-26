@@ -13,8 +13,11 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with this software.  If not, see <http://www.gnu.org/licenses/>.
+
 import datetime
 
+from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 from django.test import TestCase
 
 from news.models import NewsItem, NewsItemHistory
@@ -83,3 +86,14 @@ class NewsModelHistoryTestCase(TestCase):
         self.assertEqual(news_item_count, 0)
         self.assertEqual(news_item_history_count, 2)
         self.assertEqual(str(news_item_history), 'delete')
+
+    def test_4_adminsite(self):
+        username = 'myuser'
+        email = 'myuser@example.com'
+        password = username
+        User.objects.create_superuser(username, email, password)
+        self.client.login(username=username, password=password)
+        news_item = NewsItem.objects.create(title='My first news item',
+                                            publish_date=datetime.datetime.now())
+        res = self.client.get(reverse('admin:news_newsitemhistory_change', args=(news_item.pk,)))
+        self.assertEqual(res.status_code, 200)
