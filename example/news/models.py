@@ -14,7 +14,6 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this software.  If not, see <http://www.gnu.org/licenses/>.
 
-from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
@@ -61,4 +60,10 @@ class Event(BaseNews):
 
 # Option 2
 
-ContentTypeHistory = create_history_model_class(ContentType, (BaseModelHistory,))
+class NewsItemV2(BaseNews):
+    publish_date = models.DateTimeField(verbose_name=_('Publish date'))
+
+    class Meta:
+        verbose_name = _('News item (Version 2)')
+        verbose_name_plural = _('News (Version 2)')
+NewsItemV2History = create_history_model_class(NewsItemV2, (BaseModelHistory,))

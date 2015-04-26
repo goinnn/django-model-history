@@ -16,12 +16,10 @@
 
 
 from django.contrib import admin
-from django.contrib.contenttypes.models import ContentType
 from model_history.admin import ModelHistoryProviderAdmin
 
-from news.models import NewsItem, NewsItemHistory, Event, EventHistory
-
-from news.models import ContentTypeHistory
+from news.models import (NewsItem, NewsItemHistory, Event, EventHistory,
+                         NewsItemV2, NewsItemV2History)
 
 
 class NewsItemAdmin(admin.ModelAdmin):
@@ -40,15 +38,11 @@ class EventHistoryAdmin(admin.ModelAdmin):
     list_display = ('title', 'history_status', 'history_timestamp')
 
 
-class ContentTypeHistoryAdmin(ModelHistoryProviderAdmin):
-    pass
-
-
-admin.site.register(ContentType)
-admin.site.register(ContentTypeHistory, ContentTypeHistoryAdmin)
-
 admin.site.register(NewsItem, NewsItemAdmin)
 admin.site.register(NewsItemHistory, NewsItemHistoryAdmin)
 
 admin.site.register(Event, EventAdmin)
 admin.site.register(EventHistory, EventHistoryAdmin)
+
+admin.site.register(NewsItemV2, NewsItemAdmin)
+admin.site.register(NewsItemV2History, NewsItemHistoryAdmin)
