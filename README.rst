@@ -18,8 +18,6 @@ Installation
 In your settings.py
 -------------------
 
-Only you need it, if you want the translation of django-model-history
-
 ::
 
     INSTALLED_APPS = (
@@ -38,7 +36,7 @@ Only you need it, if you want the translation of django-model-history
 Option 1: In your models.py
 ---------------------------
 
-Only you have to update the parent class of your model.
+You only must to update the parent class of your model.
 
 ::
 
@@ -65,6 +63,8 @@ Only you have to update the parent class of your model.
 
 Option 2: In your models.py
 ---------------------------
+
+Or you can call directly to the create_history_model_class function
 
 ::
 
