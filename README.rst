@@ -95,7 +95,7 @@ of its git repository::
 Example project
 ===============
 
-.. image:: https://github.com/goinnn/django-model-history/tree/0.1.0/example/uml.png
+.. image:: https://raw.githubusercontent.com/goinnn/django-model-history/0.1.0/example/uml.png
    :target: https://github.com/goinnn/django-model-history/tree/0.1.0/example/news/models.py
 
 In the source tree, you will find a directory called  `example <https://github.com/goinnn/django-model-history/tree/0.1.0/example/>`_. It contains
