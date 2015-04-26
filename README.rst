@@ -1,6 +1,18 @@
 django-model-history
 ====================
 
+.. image:: https://travis-ci.org/goinnn/django-model-history.png
+    :target: https://travis-ci.org/goinnn/django-model-history
+
+.. image:: https://coveralls.io/repos/goinnn/django-model-history/badge.png
+    :target: https://coveralls.io/r/goinnn/django-model-history
+
+.. image:: https://badge.fury.io/py/django-model-history.png
+    :target: https://badge.fury.io/py/django-model-history
+
+.. image:: https://pypip.in/d/django-model-history/badge.png
+    :target: https://pypi.python.org/pypi/django-model-history
+
 Enable in any Model class an change history of all inserts, updates and deletes
 
 Installation
@@ -13,6 +25,7 @@ In your models.py
 Only you have to update the parent class of your model.
 
 ::
+
     from django.db import models
 
 
