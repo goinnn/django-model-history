@@ -40,6 +40,7 @@ class NewsModelHistoryTestCase(TestCase):
         self.assertEqual(news_item.title, news_item_history.title)
         self.assertEqual(news_item.description, news_item_history.description)
         self.assertEqual(news_item.publish_date, news_item_history.publish_date)
+        self.assertEqual(str(news_item_history), 'insert')
 
     def test_2_update(self):
         news_item = NewsItem.objects.create(title='My first news item',
@@ -63,6 +64,7 @@ class NewsModelHistoryTestCase(TestCase):
         self.assertEqual(news_item.title, news_item_history.title)
         self.assertEqual(news_item.description, news_item_history.description)
         self.assertEqual(news_item.publish_date, news_item_history.publish_date)
+        self.assertEqual(str(news_item_history), 'update')
 
     def test_3_delete(self):
         news_item = NewsItem.objects.create(title='My first news item',
@@ -76,5 +78,8 @@ class NewsModelHistoryTestCase(TestCase):
 
         news_item_count = NewsItem.objects.count()
         news_item_history_count = NewsItemHistory.objects.count()
+
+        news_item_history = NewsItemHistory.objects.get(pk=2)
         self.assertEqual(news_item_count, 0)
         self.assertEqual(news_item_history_count, 2)
+        self.assertEqual(str(news_item_history), 'delete')

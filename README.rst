@@ -10,9 +10,6 @@ django-model-history
 .. image:: https://badge.fury.io/py/django-model-history.png
     :target: https://badge.fury.io/py/django-model-history
 
-.. image:: https://pypip.in/d/django-model-history/badge.png
-    :target: https://pypi.python.org/pypi/django-model-history
-
 Enable in any Model class an change history of all inserts, updates and deletes
 
 Installation
