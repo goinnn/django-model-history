@@ -16,8 +16,8 @@ Installation
 ============
 
 
-In your models.py
------------------
+Option 1: In your models.py
+---------------------------
 
 Only you have to update the parent class of your model.
 
@@ -41,8 +41,27 @@ Only you have to update the parent class of your model.
 
     ...
 
+`Example <https://github.com/goinnn/django-model-history/blob/0.1.0/example/news/models.py#L26>`_.
 
 
+Option 2: In your models.py
+---------------------------
+
+::
+
+    from django.db import models
+
+
+    from model_history.models import create_history_model_class, BaseModelHistory
+
+    class MyModel(models.Model):
+        ....
+
+
+    MyModelHistory = create_history_model_class(MyModel, (BaseModelHistory,))
+
+
+`Example <https://github.com/goinnn/django-model-history/blob/0.1.0/example/news/models.py#L60>`_.
 
 In your settings.py
 -------------------

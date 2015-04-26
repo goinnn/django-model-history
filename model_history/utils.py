@@ -1,6 +1,7 @@
 import sys
 
 from copy import copy
+from importlib import import_module
 
 from django.apps.registry import apps
 from django.db import models
@@ -37,6 +38,13 @@ def create_empty_class(model, bases):
         attrs["Meta"] = Meta
         attrs["__module__"] = model.__module__
         return type(str(name), bases, attrs)
+
+
+def get_history_model(instance):
+    '''Returns the change history model or None if it does not exists'''
+    name_model = name_history_model(instance.__class__.__name__)
+    return getattr(import_module(instance.__class__.__module__, None),
+                   name_model, None)
 
 
 def get_list_of_parentlinks(fields):

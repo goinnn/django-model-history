@@ -1,5 +1,3 @@
-from importlib import import_module
-
 from django.db import models
 from django.db.models import signals
 from django.forms import model_to_dict
@@ -8,7 +6,7 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 
 
-from model_history.utils import (name_history_model,
+from model_history.utils import (get_history_model,
                                  create_history_model_class,
                                  get_list_of_parentlinks)
 
@@ -55,12 +53,8 @@ class ModelHistoryProvider(six.with_metaclass(ModelHistoryProviderMeta, models.M
 # Signals #
 
 
-def create_history_instance(status, instance):
+def create_history_instance(modelhistory, status, instance):
     '''Creates a change history instance from a instance object'''
-    name_model = name_history_model(instance.__class__.__name__)
-    modelhistory = getattr(import_module(instance.__class__.__module__, None),
-                           name_model)
-
     exclude_fields = get_list_of_parentlinks(instance._meta.fields) + [modelhistory._meta.pk.name]
     data = model_to_dict(instance, exclude=exclude_fields)
     data['history_status'] = status
@@ -71,18 +65,19 @@ def create_history_instance(status, instance):
 
 def model_history_save(sender, instance, created, **kwargs):
     '''Creates a change history instance when a instance is saved: insert or update'''
-    if isinstance(instance, ModelHistoryProvider):
+    modelhistory = get_history_model(instance)
+    if modelhistory and issubclass(modelhistory, BaseModelHistory):
         if created:
             status = 'insert'
         else:
             status = 'update'
-        create_history_instance(status, instance)
+        create_history_instance(modelhistory, status, instance)
 signals.post_save.connect(model_history_save)
 
 
 def model_history_delete(sender, instance, **kwargs):
     '''Create an change history instance when a instance is deleted'''
-    if isinstance(instance, ModelHistoryProvider):
-        status = 'delete'
-        create_history_instance(status, instance)
+    modelhistory = get_history_model(instance)
+    if modelhistory and issubclass(modelhistory, BaseModelHistory):
+        create_history_instance(modelhistory, 'delete', instance)
 signals.post_delete.connect(model_history_delete)

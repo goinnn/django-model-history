@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 
 from django.db import models, migrations
 import django.db.models.deletion
-import datetime
 
 
 class Migration(migrations.Migration):
@@ -27,20 +26,22 @@ class Migration(migrations.Migration):
             name='BaseNewsHistory',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('history_timestamp', models.DateTimeField(default=datetime.datetime.now, verbose_name='Timestamp')),
+                ('history_timestamp', models.DateTimeField(auto_now_add=True, verbose_name='Timestamp')),
                 ('history_status', models.CharField(default=b'update', max_length=6, verbose_name='Status', choices=[(b'insert', 'Insert'), (b'update', 'Update'), (b'delete', 'Delete')])),
                 ('title', models.CharField(max_length=256, verbose_name='Title')),
                 ('description', models.TextField(null=True, verbose_name='Description', blank=True)),
             ],
             options={
                 'abstract': False,
+                'verbose_name': 'base news change history',
+                'verbose_name_plural': 'base news change histories',
             },
         ),
         migrations.CreateModel(
             name='EventHistory',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('history_timestamp', models.DateTimeField(default=datetime.datetime.now, verbose_name='Timestamp')),
+                ('history_timestamp', models.DateTimeField(auto_now_add=True, verbose_name='Timestamp')),
                 ('history_status', models.CharField(default=b'update', max_length=6, verbose_name='Status', choices=[(b'insert', 'Insert'), (b'update', 'Update'), (b'delete', 'Delete')])),
                 ('title', models.CharField(max_length=256, verbose_name='Title')),
                 ('description', models.TextField(null=True, verbose_name='Description', blank=True)),
@@ -49,13 +50,15 @@ class Migration(migrations.Migration):
             ],
             options={
                 'abstract': False,
+                'verbose_name': 'Event change history',
+                'verbose_name_plural': 'Event change histories',
             },
         ),
         migrations.CreateModel(
             name='NewsItemHistory',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('history_timestamp', models.DateTimeField(default=datetime.datetime.now, verbose_name='Timestamp')),
+                ('history_timestamp', models.DateTimeField(auto_now_add=True, verbose_name='Timestamp')),
                 ('history_status', models.CharField(default=b'update', max_length=6, verbose_name='Status', choices=[(b'insert', 'Insert'), (b'update', 'Update'), (b'delete', 'Delete')])),
                 ('title', models.CharField(max_length=256, verbose_name='Title')),
                 ('description', models.TextField(null=True, verbose_name='Description', blank=True)),
@@ -63,6 +66,8 @@ class Migration(migrations.Migration):
             ],
             options={
                 'abstract': False,
+                'verbose_name': 'News item change history',
+                'verbose_name_plural': 'News item change histories',
             },
         ),
         migrations.CreateModel(
@@ -73,7 +78,8 @@ class Migration(migrations.Migration):
                 ('end_date', models.DateTimeField(verbose_name='End date')),
             ],
             options={
-                'abstract': False,
+                'verbose_name': 'Event',
+                'verbose_name_plural': 'Events',
             },
             bases=('news.basenews',),
         ),
@@ -84,7 +90,8 @@ class Migration(migrations.Migration):
                 ('publish_date', models.DateTimeField(verbose_name='Publish date')),
             ],
             options={
-                'abstract': False,
+                'verbose_name': 'News item',
+                'verbose_name_plural': 'News',
             },
             bases=('news.basenews',),
         ),

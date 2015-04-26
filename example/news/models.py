@@ -14,12 +14,13 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this software.  If not, see <http://www.gnu.org/licenses/>.
 
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
+from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 
-from model_history.models import ModelHistoryProvider
-
-from django.utils.encoding import python_2_unicode_compatible
+from model_history.models import ModelHistoryProvider, BaseModelHistory
+from model_history.utils import create_history_model_class
 
 
 @python_2_unicode_compatible
@@ -54,3 +55,6 @@ class Event(BaseNews):
     class Meta:
         verbose_name = _('Event')
         verbose_name_plural = _('Events')
+
+
+ContentTypeHistory = create_history_model_class(ContentType, (BaseModelHistory,))
