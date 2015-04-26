@@ -36,6 +36,18 @@ def create_empty_class(model, bases):
         return type(str(name), bases, attrs)
 
 
+def get_list_of_parentlinks(fields):
+    '''Returns a parentlink fields from fields param'''
+    return [f.name for f in fields
+            if getattr(f, 'rel', None) and f.rel.parent_link]
+
+
+def remove_parentlink_fields(fields):
+    '''Returns a new field list without the parentlink fields'''
+    return [f for f in fields
+            if not getattr(f, 'rel', None) or not f.rel.parent_link]
+
+
 def create_history_model_class(model_class, bases):
     '''
     Returns the history model class of the model_class.
@@ -53,16 +65,28 @@ def create_history_model_class(model_class, bases):
     fk.concrete = True
     fk.column = 'history_id'
     fk.opts = model_class_history._meta
+    fk.related_fields[0] = (fk.related_fields[0][0], model_class._meta.get_field(model_class._meta.pk.name))
+
     setattr(model_class_history, 'history', ReverseSingleRelatedObjectDescriptor(fk))
 
     # Assign the fields to the new class (model_class_history)
-    model_class_history._meta.fields = model_class._meta.fields + model_class_history._meta.fields[1:] + (fk,)
-    model_class_history._meta.local_many_to_many = model_class._meta.local_many_to_many + model_class_history._meta.local_many_to_many
-    model_class_history._meta.local_concrete_fields = model_class._meta.local_concrete_fields + model_class_history._meta.local_concrete_fields[1:] + (fk,)
-    model_class_history._meta.local_fields = model_class._meta.local_fields + model_class_history._meta.local_fields[1:] + [fk]
+    model_class_history._meta.fields = model_class_history._meta.fields + copy(model_class._meta.fields)[1:] + (fk,)
+    model_class_history._meta.local_many_to_many = model_class_history._meta.local_many_to_many + copy(model_class._meta.local_many_to_many)
+
+    # Remove parent fields
+    model_class_history._meta.fields = remove_parentlink_fields(model_class_history._meta.fields)
+    model_class_history._meta.local_many_to_many = remove_parentlink_fields(model_class_history._meta.local_many_to_many)
+    model_class_history._meta.local_concrete_fields = copy(model_class_history._meta.fields)
+    model_class_history._meta.local_fields = copy(model_class_history._meta.fields)
 
     forward_fields_map = copy(model_class._meta._forward_fields_map)
-    del forward_fields_map['id']
+    if model_class._meta.pk:
+        field_id = forward_fields_map[model_class._meta.pk.name]
+        if getattr(field_id, 'rel', None) and field_id.rel.parent_link:
+            del forward_fields_map['%s_id' % field_id.name]
+        del forward_fields_map[model_class._meta.pk.name]
+        if 'id' in forward_fields_map:
+            del forward_fields_map['id']
     model_class_history._meta._forward_fields_map.update(forward_fields_map)
     model_class_history._meta._forward_fields_map.update({'history': fk})
 

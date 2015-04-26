@@ -9,7 +9,9 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 
 
-from model_history.utils import name_history_model, create_history_model_class
+from model_history.utils import (name_history_model,
+                                 create_history_model_class,
+                                 get_list_of_parentlinks)
 
 STATUS = (('insert', _('Insert')),
           ('update', _('Update')),
@@ -20,16 +22,17 @@ STATUS = (('insert', _('Insert')),
 class BaseModelHistory(models.Model):
     '''Base model class to the hictoric instances'''
 
-    timestamp = models.DateTimeField(default=datetime.datetime.now)
-    status = models.CharField(verbose_name=_(u'Status'),
-                              max_length=6, choices=STATUS,
-                              default='update')
+    history_timestamp = models.DateTimeField(verbose_name=_('Timestamp'),
+                                             default=datetime.datetime.now)
+    history_status = models.CharField(verbose_name=_('Status'),
+                                      max_length=6, choices=STATUS,
+                                      default='update')
 
     class Meta:
         abstract = True
 
     def __str__(self):
-        return self.status
+        return self.history_status
 
 
 class ModelHistoryProviderMeta(models.base.ModelBase):
@@ -37,7 +40,7 @@ class ModelHistoryProviderMeta(models.base.ModelBase):
 
     def __new__(cls, name, bases, attrs):
         new_class = super(ModelHistoryProviderMeta, cls).__new__(cls, name, bases, attrs)
-        if name != 'ModelHistoryProvider':
+        if name != 'ModelHistoryProvider' and not new_class._meta.abstract:
             create_history_model_class(new_class, (BaseModelHistory,))
         return new_class
 
@@ -56,13 +59,15 @@ class ModelHistoryProvider(models.Model):
 
 def create_history_instance(status, instance):
     '''Create an historic instance from a instance object'''
-    data = model_to_dict(instance, exclude=(instance._meta.pk.name,))
-    data['status'] = status
-    data['history_id'] = instance.pk
     name_model = name_history_model(instance.__class__.__name__)
-
     modelhistory = getattr(import_module(instance.__class__.__module__, None),
                            name_model)
+
+    exclude_fields = get_list_of_parentlinks(instance._meta.fields) + [modelhistory._meta.pk.name]
+    data = model_to_dict(instance, exclude=exclude_fields)
+    data['history_status'] = status
+    data['history_id'] = instance.pk
+
     modelhistory.objects.create(**data)
 
 
