@@ -60,7 +60,7 @@ Only you have to update the parent class of your model.
 
     ...
 
-`Example <https://github.com/goinnn/django-model-history/blob/0.1.0/example/news/models.py#L28>`_.
+`Option 1 example <https://github.com/goinnn/django-model-history/blob/0.1.0/example/news/models.py#L28>`_.
 
 
 Option 2: In your models.py
@@ -80,14 +80,16 @@ Option 2: In your models.py
     MyModelHistory = create_history_model_class(MyModel, (BaseModelHistory,))
 
 
-`Example <https://github.com/goinnn/django-model-history/blob/0.1.0/example/news/models.py#L63>`_.
+`Option 2 example <https://github.com/goinnn/django-model-history/blob/0.1.0/example/news/models.py#L63>`_.
 
 
 Development
 ===========
 
 You can get the last bleeding edge version of django-model-history by doing a clone
-of its git repository::
+of its git repository
+
+::
 
   git clone https://github.com/goinnn/django-model-history
 

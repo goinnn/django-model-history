@@ -34,7 +34,7 @@ class EventAdmin(admin.ModelAdmin):
     list_display = ('title', )
 
 
-class EventHistoryAdmin(admin.ModelAdmin):
+class EventHistoryAdmin(ModelHistoryProviderAdmin):
     list_display = ('title', 'history_status', 'history_timestamp')
 
 

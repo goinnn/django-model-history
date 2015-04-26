@@ -23,7 +23,7 @@ def read(*rnames):
 
 setup(
     name="django-model-history",
-    version="0.1.0",
+    version="0.1.1",
     author="Pablo Martin",
     author_email="goinnn@gmail.com",
     description="Enable in any Model class an change history of all inserts, updates and deletes",
