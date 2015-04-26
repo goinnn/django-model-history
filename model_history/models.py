@@ -5,6 +5,7 @@ from importlib import import_module
 from django.db import models
 from django.db.models import signals
 from django.forms import model_to_dict
+from django.utils import six
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 
@@ -45,10 +46,8 @@ class ModelHistoryProviderMeta(models.base.ModelBase):
         return new_class
 
 
-class ModelHistoryProvider(models.Model):
+class ModelHistoryProvider(six.with_metaclass(ModelHistoryProviderMeta, models.Model)):
     '''This class provides the model history feature to every class inheriting from it'''
-
-    __metaclass__ = ModelHistoryProviderMeta
 
     class Meta:
         abstract = True
