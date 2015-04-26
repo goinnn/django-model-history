@@ -53,7 +53,7 @@ def remove_parentlink_fields(fields):
 
 def create_history_model_class(model_class, bases):
     '''
-    Returns the history model class of the model_class.
+    Returns the change history model class of the model_class.
     This class will have the same attributes that model_class, so it will be
     able to save the data. Also it will have timestamp field and status field,
     these fields are from bases class
@@ -93,5 +93,6 @@ def create_history_model_class(model_class, bases):
     model_class_history._meta._forward_fields_map.update(forward_fields_map)
     model_class_history._meta._forward_fields_map.update({'history': fk})
 
+    # Add class to the right path
     setattr(sys.modules[model_class_history.__module__], model_class_history.__name__, model_class_history)
     return model_class_history

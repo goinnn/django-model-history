@@ -19,7 +19,7 @@ STATUS = (('insert', _('Insert')),
 
 @python_2_unicode_compatible
 class BaseModelHistory(models.Model):
-    '''Base model class to the hictoric instances'''
+    '''Base model class to the hictory instances'''
 
     history_timestamp = models.DateTimeField(verbose_name=_('Timestamp'),
                                              auto_now_add=True,
@@ -56,7 +56,7 @@ class ModelHistoryProvider(six.with_metaclass(ModelHistoryProviderMeta, models.M
 
 
 def create_history_instance(status, instance):
-    '''Create an historic instance from a instance object'''
+    '''Creates a change history instance from a instance object'''
     name_model = name_history_model(instance.__class__.__name__)
     modelhistory = getattr(import_module(instance.__class__.__module__, None),
                            name_model)
@@ -70,7 +70,7 @@ def create_history_instance(status, instance):
 
 
 def model_history_save(sender, instance, created, **kwargs):
-    '''Create an historic instance when a instance is saved: insert or update'''
+    '''Creates a change history instance when a instance is saved: insert or update'''
     if isinstance(instance, ModelHistoryProvider):
         if created:
             status = 'insert'
@@ -81,7 +81,7 @@ signals.post_save.connect(model_history_save)
 
 
 def model_history_delete(sender, instance, **kwargs):
-    '''Create an historic instance when a instance is deleted'''
+    '''Create an change history instance when a instance is deleted'''
     if isinstance(instance, ModelHistoryProvider):
         status = 'delete'
         create_history_instance(status, instance)
